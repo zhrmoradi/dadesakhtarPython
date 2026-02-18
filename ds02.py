@@ -76,3 +76,4 @@ def replace(self,x,y):
         if self.st[i] == x :
             self.st[i]=y
                                 
+
