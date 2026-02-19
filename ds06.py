@@ -1,109 +1,108 @@
-class dnode():
-    def __init__(self , x):
-        self.Data = x
+class DNode:
+    def __init__(self, data):
+        self.data = data
         self.next = None
-        self.back = None
+        self.prev = None
 
 
-class dlinked_list :
+class DoublyLinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
 
-    def ins_frist(self , x):
+    def insert_first(self, data):
+        new_node = DNode(data)
         if self.head is None:
-            self.head = dnode(x)
-        a = dnode(x)
-        a.next = self.head
-        self.head = a
-        a.next.back = a
-    def ins_last(self , x):
-        if self.head is None:
-            self.ins_frist(x)
+            self.head = self.tail = new_node
             return
-        c = self.head
-        while c.next:
-            c = c.next
-        a = dnode(x)
-        c.next = a
-        a.back = c
-    def ins_after(self , x ,y):
+        new_node.next = self.head
+        self.head.prev = new_node
+        self.head = new_node
+
+    def insert_last(self, data):
         if self.head is None:
-            print("error")
+            self.insert_first(data)
             return
-        c = self.head
-        while c :
-            if c.Data == x:
-                if c.next is None:
-                    self.ins_last(y)
-                    return
-                a = dnode(y)
-                a.next = c.next
-                c.next = a
-                a.next.back = a
-                a.back = c
-                return
-            c = c.next
-            print("not found")
-    def ins_befor(self , x , y):
+        new_node = DNode(data)
+        self.tail.next = new_node
+        new_node.prev = self.tail
+        self.tail = new_node
+
+    def insert_after(self, target, data):
+        current = self.head
+        while current:
+            if current.data == target:
+                if current == self.tail:
+                    self.insert_last(data)
+                    return True
+                new_node = DNode(data)
+                new_node.next = current.next
+                new_node.prev = current
+                current.next.prev = new_node
+                current.next = new_node
+                return True
+            current = current.next
+        return False
+
+    def insert_before(self, target, data):
+        current = self.head
+        while current:
+            if current.data == target:
+                if current == self.head:
+                    self.insert_first(data)
+                    return True
+                new_node = DNode(data)
+                new_node.next = current
+                new_node.prev = current.prev
+                current.prev.next = new_node
+                current.prev = new_node
+                return True
+            current = current.next
+        return False
+
+    def delete_first(self):
         if self.head is None:
-            print("error")
-            return
-        c = self.head
-        while c:
-            if c.Data == x:
-                if c.back is None:
-                    self.ins_frist(y)
-                    return
-                a = dnode(y)
-                a.next = c
-                c.back.next = a
-                a.back = c.back
-                c.back = a
-                return
-            c = c.next
-            print("not found")
-    def del_first(self):
-        if self.head is None:
-            print("error")
-            return
-        c = self.head
-        self.head = c.next
-        del c
+            return False
+        temp = self.head
+        self.head = self.head.next
         if self.head:
-            self.head.back = None
-    def del_last(self):
-        if self.head is None:
-            print("error")
-            return
-        c = self.head
-        while c.next:
-            c = c.next
-        if c.back is None:
-            self.del_first()
-            return
-        c.back.next = None
-        del c
-    def del_befor(self , x):
-        if self.head is None:
-            print("error")
-            return
-        if self.head.Data == x:
-            print("error")
-            return
-        c = self.head
-        while c :
-            if c.Data == x:
-                a = c.back
-                c.back = a.back
-                if a.back:
-                    a.back.next = c
-                del a
-                return
-            c = c.next
-            print("x not found")
-                                                   
+            self.head.prev = None
+        else:
+            self.tail = None
+        del temp
+        return True
 
+    def delete_last(self):
+        if self.tail is None:
+            return False
+        if self.head == self.tail:
+            return self.delete_first()
+        temp = self.tail
+        self.tail = self.tail.prev
+        self.tail.next = None
+        del temp
+        return True
 
+    def delete_before(self, target):
+        current = self.head
+        while current:
+            if current.data == target:
+                if current.prev is None:
+                    return False
+                temp = current.prev
+                if temp.prev:
+                    temp.prev.next = current
+                    current.prev = temp.prev
+                else:
+                    current.prev = None
+                    self.head = current
+                del temp
+                return True
+            current = current.next
+        return False
 
-
-
+    def display(self):
+        current = self.head
+        while current:
+            print(current.data, end=" <-> " if current.next else "\n")
+            current = current.next
