@@ -1,95 +1,57 @@
-class Tree_Node :
-    def __init__(self , x):
-        self.Data = x
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
         self.Lchild = None
         self.Rchild = None
-#تابع بازگشتی بنویسید که تعداد برگ های درخت باینری روت را محاسبه کند
-def Count_leaves(root):
+
+def count_leaves(root):
     if root is None:
         return 0
-    if 2 :
-#       if root.Lchild is None :
-#           and root.Rchild is not None:
-#       if root.Rchild is None:
-#           and root.Lchild is not None:                
+    if root.Lchild is None and root.Rchild is None:
         return 1
-    return Count_leaves(root.Lchild) + Count_leaves(root.Rchild)
+    return count_leaves(root.Lchild) + count_leaves(root.Rchild)
 
-#تابع بازگشتی بنویسید که گره های درجه یک ، درخت باینری را محاسبه کند
-def Count_1Deg(root):
+def count_1deg(root):
     if root is None:
         return 0
-    if root.Lchild:
-        return 1
-    if root.Rchild:
-        return 1
-    return Count_1Deg(root.Lchild) + Count_1Deg(root.Rchild)   
+    count = 0
+    if (root.Lchild is None) != (root.Rchild is None):
+        count = 1
+    return count + count_1deg(root.Lchild) + count_1deg(root.Rchild)
 
-def Count_2Deg (root):
+def count_2deg(root):
     if root is None:
         return 0
-    if root.Lchild:
-        return Count_2Deg(root.Lchild)
-    if root.Rchild:
-        return Count_2Deg(root.Rchild)
-    return Count_2Deg(root.Lchild) + Count_2Deg(root.Rchild)
+    count = 0
+    if root.Lchild and root.Rchild:
+        count = 1
+    return count + count_2deg(root.Lchild) + count_2deg(root.Rchild)
 
-#تابعی بازگشتی بنویسید که حاصل جمع تمامی داده های یک درخت دودویی را بازگرداند
-def sum_Tree(root):
+def sum_tree(root):
     if root is None:
         return 0
-    if root.Lchild:
-        return sum_Tree(root.Lchild) + root.Data
-    if root.Rchild:
-        return sum_Tree(root.Rchild) + root.Data
-    return sum_Tree(root.Lchild) + sum_Tree(root.Rchild) + root.Data
+    return root.data + sum_tree(root.Lchild) + sum_tree(root.Rchild)
 
-#تابعی بازگشتی بنوبسید که تعداد نود های یک درخت باینری را بازگرداند
-def Count(root):
+def count_nodes(root):
     if root is None:
         return 0
-    return 1+ Count(root.Lchild) + Count(root.Rchild)
+    return 1 + count_nodes(root.Lchild) + count_nodes(root.Rchild)
 
-
-
-
-
-def pre(root):
+def preorder(root):
     if root is None:
         return
-    print(root.Data)
-    print(root.Lchild)
-    print(root.Rchild)       
+    print(root.data)
+    preorder(root.Lchild)
+    preorder(root.Rchild)
 
-#تابعی بازگشتی بنویسید که مقدار تارگت را در یک درخت جستجو کند
-def search(root , t):
+def search(root, target):
     if root is None:
         return False
-    if root.Data == t:
+    if root.data == target:
         return True
-    return search(root.Lchild) or search(root.Rchild)      
+    return search(root.Lchild, target) or search(root.Rchild, target)
 
-#تابعی بازگشتی بنویسید که مقدار حداکثر یک درخت را بازگرداند
-def max_t(root):
+def max_tree(root):
     if root is None:
-        return float("inf")
-    return max(max_t(root.Lchild) , max_t(root.Rchild) , root.Data)
-    
-
-
-
-
-
-
-
-
-
-
-def count(root):
-    if root is None:
-        return 0
-    return 1+ count(root.left) + count(root.right)
- 
-
-
-
+        return float("-inf")
+    return max(root.data, max_tree(root.Lchild), max_tree(root.Rchild))
