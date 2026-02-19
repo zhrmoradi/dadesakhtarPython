@@ -1,35 +1,37 @@
-def BFS(graph , start):
-    queue = [start]
-    visited = {start}
+from collections import deque
+
+def BFS(graph, start):
+    queue = deque([start])
+    visited = set([start])
     while queue:
-        vertex = queue.pop(0)
+        vertex = queue.popleft()
         for ne in graph[vertex]:
-            visited.add(ne)
-            queue.append(ne)
-
-
+            if ne not in visited:
+                visited.add(ne)
+                queue.append(ne)
     return visited
 
-def DFS(graph , start , visited):
-    visited[start] = True
+def DFS(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
     for ne in graph[start]:
-        if not visited[ne]:
-            DFS(graph , ne , visited)
+        if ne not in visited:
+            DFS(graph, ne, visited)
+    return visited
 
-def sort1(A):
-    B = [] *len(A)
-    for i in range(len(A)):
-        for j in range(1 , len(A)):
-            if A[j] < min:
-                min = A[j]
-                k = j
-        B[i] = min
-        A[k] = float("inf")
-    return B 
+def selection_sort(A):
+    B = []
+    A_copy = A[:]
+    while A_copy:
+        minimum = min(A_copy)
+        B.append(minimum)
+        A_copy.remove(minimum)
+    return B
 
-def Bubble(A):
-    for i in range(len(A)-1):
-        for j in range(len(A)-1):
+def bubble_sort(A):
+    n = len(A)
+    for i in range(n-1):
+        for j in range(n-1-i):  # optimization: last i elements are already sorted
             if A[j] > A[j+1]:
-                A[j], A[j+1] = A[j+1] , A[j]                       
-
+                A[j], A[j+1] = A[j+1], A[j]
