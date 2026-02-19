@@ -1,62 +1,69 @@
-class stack : 
-    def __init__(self , limit = 1000):
-        self.st=[]
-        self.lim = limit
-    def push(self , x):
-        if len(self.st) >= self.lim:
-           print("stack is full")
-           return -1
-        self.st.append(x)
-    def pop(self):
-        if len(self.st) == 0 :
-            print("stack is empty")
-            return -1
-        return self.st.pop()
-    def peek(self):
-        if len(self.st) == 0 :
-            print("stack is empty")
-            return -1
-        return self.st[-1]
-         
+class Stack:
+    def __init__(self, capacity=1000):
+        self.items = []
+        self.capacity = capacity
 
-test = stack(10)
-test.push(57)
-test.push(126)
-test.push(-10)
-k=test.peek()
+    def is_empty(self):
+        return len(self.items) == 0
 
-#"ایندکس(x) های درون پشته را برگرداند."
-def find(self,x):
-    for i in range(len(self.st)):
-        if self.st[i] == x :
-           print(i)
-            
-#"اولین شامل  (x) را برگرداند"
-def find1(self,x):
-    for i in range(len(self.st)):
-        if self.st[i] == x :
-           print(i)
-           return
-"اخرین ایندکس شامل (x) را چاپ کند"
-def find2(self,x):
-    for i in range(len(self.st)-1,-1,-1) :
-        if self.st[i] == x :
-            print(i)
+    def is_full(self):
+        return len(self.items) >= self.capacity
+
+    def push(self, value):
+        if self.is_full():
+            print("Stack overflow")
             return
-def find2_n(self,x):
-    for i in range(len(self.st)):
-        if self.st[i] == x :
-            p=i
-    print(p)                
+        self.items.append(value)
 
-def find2_n(self,x):
-    list=[]
-    for i in range(len(self.st)):
-        if self.st[i] == x :
-            list.append(i)
-    print(list[2])
+    def pop(self):
+        if self.is_empty():
+            print("Stack underflow")
+            return None
+        return self.items.pop()
 
-def replace(self,x,y):
-    for i in range(len(self.st)):
-        if self.st[i] == x :
-            self.st[i]=y
+    def top(self):
+        if self.is_empty():
+            print("Stack is empty")
+            return None
+        return self.items[-1]
+
+    
+    def find_all(self, x):
+        indexes = [i for i, val in enumerate(self.items) if val == x]
+        return indexes
+
+    
+    def find_first(self, x):
+        for i, val in enumerate(self.items):
+            if val == x:
+                return i
+        return -1
+
+
+    def find_last(self, x):
+        for i in range(len(self.items) - 1, -1, -1):
+            if self.items[i] == x:
+                return i
+        return -1
+        
+    def replace(self, old, new):
+        count = 0
+        for i in range(len(self.items)):
+            if self.items[i] == old:
+                self.items[i] = new
+                count += 1
+        return count
+
+s = Stack(10)
+s.push(57)
+s.push(126)
+s.push(-10)
+s.push(126)
+
+print("Top:", s.top())
+print("All indexes of 126:", s.find_all(126))
+print("First index:", s.find_first(126))
+print("Last index:", s.find_last(126))
+
+s.replace(126, 999)
+print("After replace:", s.items)
